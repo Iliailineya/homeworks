@@ -1,4 +1,4 @@
-package org.example.homework1;
+package model;
 
 import java.time.LocalDate;
 import java.util.Objects;
