@@ -53,6 +53,7 @@ class AccountServiceTest {
         List<Account> accounts = createTestAccounts();
         AccountService accountService = new AccountService();
         Map<Integer, List<Account>> result = accountService.groupByBirthMonth(accounts);
+        assertNotNull(result);
         assertEquals(4, result.size());
     }
 
@@ -69,6 +70,7 @@ class AccountServiceTest {
         List<Account> accounts = createTestAccounts();
         AccountService accountService = new AccountService();
         String result = accountService.getNamesConcatenated(List.of(accounts));
+        assertNotNull(result);
         assertEquals("John Doe, Alice Johnson, Bob Smith, Emily Clark", result);
     }
 
@@ -77,6 +79,7 @@ class AccountServiceTest {
         List<Account> accounts = createTestAccounts();
         AccountService accountService = new AccountService();
         List<Account> sortedAccounts = accountService.getSortedAccounts(accounts);
+        assertNotNull(sortedAccounts);
         assertEquals("Clark", sortedAccounts.get(0).getLastName());
     }
 
@@ -93,6 +96,7 @@ class AccountServiceTest {
         List<Account> accounts = createTestAccounts();
         AccountService accountService = new AccountService();
         Map<Integer, Double> result = accountService.groupByBirthYearAndAverageBalance(accounts);
+        assertNotNull(result);
         assertEquals(4, result.size());
     }
 
