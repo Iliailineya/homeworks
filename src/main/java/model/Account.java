@@ -5,6 +5,7 @@ import model.enams.Gender;
 import java.time.LocalDate;
 import java.util.Objects;
 
+
 public class Account {
     private String firstName;
     private String lastName;
@@ -12,6 +13,7 @@ public class Account {
     private LocalDate birthday;
     private Double balance;
     private Gender gender;
+  
     public Account(String firstName, String lastName, String country, LocalDate birthday, Double balance, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
