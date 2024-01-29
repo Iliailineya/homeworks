@@ -1,17 +1,20 @@
 package model;
 
+import model.enams.Gender;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
+
 public class Account {
     private String firstName;
     private String lastName;
     private String country;
     private LocalDate birthday;
     private Double balance;
-    private String gender;
-    public Account(String firstName, String lastName, String country, LocalDate birthday, Double balance, String gender) {
+    private Gender gender;
+  
+    public Account(String firstName, String lastName, String country, LocalDate birthday, Double balance, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -59,11 +62,11 @@ public class Account {
         this.balance = balance;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
