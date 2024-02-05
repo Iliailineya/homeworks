@@ -2,11 +2,13 @@ package example.spring.service;
 
 import example.spring.model.enams.Gender;
 import example.spring.model.Account;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class AccountService {
     public List<Account> filterAccountsByBalance(List<Account> accounts) {
         return accounts.stream()
