@@ -1,7 +1,8 @@
 package service;
 
-import model.Account;
-import model.enams.Gender;
+import example.spring.model.Account;
+import example.spring.model.enams.Gender;
+import example.spring.service.AccountService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

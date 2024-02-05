@@ -1,7 +1,7 @@
-package service;
+package example.spring.service;
 
-import model.Account;
-import model.enams.Gender;
+import example.spring.model.enams.Gender;
+import example.spring.model.Account;
 
 import java.time.LocalDate;
 import java.util.*;

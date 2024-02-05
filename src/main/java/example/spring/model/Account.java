@@ -1,6 +1,6 @@
-package model;
+package example.spring.model;
 
-import model.enams.Gender;
+import example.spring.model.enams.Gender;
 
 import java.time.LocalDate;
 import java.util.Objects;
