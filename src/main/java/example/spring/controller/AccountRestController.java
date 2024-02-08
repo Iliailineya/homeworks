@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/account")
-public class accountRestController {
+public class AccountRestController {
     private final List<Account> accounts;
 
-    public accountRestController(List<Account> accounts) {
+    public AccountRestController(List<Account> accounts) {
         this.accounts = accounts;
     }
 

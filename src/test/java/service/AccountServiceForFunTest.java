@@ -101,10 +101,10 @@ class AccountServiceForFunTest {
 
     private static List<Account> createTestAccounts() {
         return Arrays.asList(
-                new Account(1,"John", "Doe", "USA", LocalDate.of(1990, Month.JANUARY, 12), 16000d, Gender.MALE),
-                new Account(2, "Alice", "Johnson", "Canada", LocalDate.of(1995, Month.MARCH, 5), 18000d, Gender.FEMALE),
-                new Account(3,"Bob", "Smith", "UK", LocalDate.of(2000, Month.AUGUST, 22), 13000d, Gender.MALE),
-                new Account(4,"Emily", "Clark", "Germany", LocalDate.of(1992, Month.JULY, 15), 12000d, Gender.FEMALE)
+                new Account(1L,"John", "Doe", "USA", LocalDate.of(1990, Month.JANUARY, 12), 16000d, Gender.MALE),
+                new Account(2L, "Alice", "Johnson", "Canada", LocalDate.of(1995, Month.MARCH, 5), 18000d, Gender.FEMALE),
+                new Account(3L,"Bob", "Smith", "UK", LocalDate.of(2000, Month.AUGUST, 22), 13000d, Gender.MALE),
+                new Account(4L,"Emily", "Clark", "Germany", LocalDate.of(1992, Month.JULY, 15), 12000d, Gender.FEMALE)
         );
     }
 }
