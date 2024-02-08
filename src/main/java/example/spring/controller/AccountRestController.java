@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountRestController {
