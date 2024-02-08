@@ -1,43 +1,33 @@
 package example.spring.repository;
 
+import example.spring.exception.AccountNotFoundException;
 import example.spring.model.Account;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountsRepository implements AccountsCrudRepository{
+@Repository
+public class AccountsRepository {
     private final List<Account> accounts = new ArrayList<>();
-
-
-    @Override
-    public Account save(Account account) {
-        return null;
-    }
 
     public List<Account> findAll() {
         return accounts;
     }
 
-    public Optional<Account> findById(long id) {
-        return accounts.stream()
-                .filter(account -> account.getId().equals(id))
+    public Optional<Account> getAccountById(long id) {
+        Optional<Account> account = accounts.stream()
+                .filter(a -> a.getId() == id)
                 .findFirst();
-    }
-
-    @Override
-    public boolean existsById(long id) {
-        return false;
-    }
-
-    public Account add(Account account) {
-        accounts.add(account);
+        if (account.isEmpty()) {
+            throw new AccountNotFoundException("Account not found");
+        }
         return account;
     }
 
-
-    public Account update(long id, Account accountToUpdate) {
-        Optional<Account> possibleAccount = findById(id);
+    public Account updateById(long id, Account accountToUpdate) {
+        Optional<Account> possibleAccount = getAccountById(id);
         return possibleAccount.map(account -> {
             account.setFirstName(accountToUpdate.getFirstName());
             account.setLastName(accountToUpdate.getLastName());
@@ -49,7 +39,7 @@ public class AccountsRepository implements AccountsCrudRepository{
     }
 
     public void deleteById(long id) {
-        Optional<Account> account = findById(id);
+        Optional<Account> account = getAccountById(id);
         account.ifPresent(accounts::remove);
     }
 }
