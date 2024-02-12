@@ -12,22 +12,36 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountService {
 
-    private final AccountsRepository accountsRepository;
+    private final AccountsRepository repository;
+
+    public Account createAccount(Account account) {
+        return repository.save(account);
+    }
 
     public Account getAccountById(long id) {
-        return accountsRepository.getAccountById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account with id " + id + " not found"));
     }
 
     public List<Account> getAllAccounts() {
-        return accountsRepository.findAll();
+        return repository.findAll();
     }
 
     public Account updateAccount(long id, Account account) {
-        return accountsRepository.updateById(id, account);
+        if (repository.existsById(id)) {
+            account.setId(id);
+            return repository.save(account);
+        } else {
+            throw new AccountNotFoundException("Account with id " + id + " not found");
+        }
     }
 
+
     public void deleteAccountById(long id) {
-        accountsRepository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new AccountNotFoundException("Account with id " + id + " not found");
+        }
     }
 }
