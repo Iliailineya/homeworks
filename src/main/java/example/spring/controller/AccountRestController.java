@@ -28,23 +28,10 @@ public class AccountRestController {
         this.accountService = accountService;
     }
 
-    @PostMapping
+    @PostMapping("/post")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         Account createdAccount = accountService.createAccount(account);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
-        /*
-            curl -X POST \
-            http://localhost:8080/api/accounts \
-            -H 'Content-Type: application/json' \
-            -d '{
-                "firstName": "John",
-                "lastName": "Doe",
-                "country": "USA",
-                "birthday": "1990-01-12",
-                "balance": 16000.00,
-                "gender": "MALE"
-                }'
-         */
     }
 
     @GetMapping("/test")
@@ -58,7 +45,7 @@ public class AccountRestController {
         return ResponseEntity.ok(account);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);

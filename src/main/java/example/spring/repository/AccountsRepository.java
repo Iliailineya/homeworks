@@ -1,6 +1,5 @@
 package example.spring.repository;
 
-import example.spring.exception.AccountNotFoundException;
 import example.spring.model.Account;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public class AccountsRepository {
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public AccountsRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -38,13 +37,9 @@ public class AccountsRepository {
     }
 
     public Optional<Account> findById(Long id) {
-        try {
-            Session currentSession = sessionFactory.getCurrentSession();
-            Account account = currentSession.get(Account.class, id);
-            return Optional.ofNullable(account);
-        } catch (RuntimeException e) {
-            throw new AccountNotFoundException("Account not found");
-        }
+        Session currentSession = sessionFactory.getCurrentSession();
+        Account account = currentSession.get(Account.class, id);
+        return Optional.ofNullable(account);
     }
 
     public void updateAccount(Account account) {
@@ -64,35 +59,3 @@ public class AccountsRepository {
         return account != null;
     }
 }
-//    private final List<Account> accounts = new ArrayList<>();
-//
-//    public List<Account> findAll() {
-//        return accounts;
-//    }
-//
-//    public Optional<Account> findById(long id) {
-//        Optional<Account> account = accounts.stream()
-//                .filter(a -> a.getId() == id)
-//                .findFirst();
-//        if (account.isEmpty()) {
-//            throw new AccountNotFoundException("Account not found");
-//        }
-//        return account;
-//    }
-//
-//    public Account updateById(long id, Account accountToUpdate) {
-//        Optional<Account> possibleAccount = findById(id);
-//        return possibleAccount.map(account -> {
-//            account.setFirstName(accountToUpdate.getFirstName());
-//            account.setLastName(accountToUpdate.getLastName());
-//            account.setCountry(accountToUpdate.getCountry());
-//            account.setBirthday(accountToUpdate.getBirthday());
-//            account.setGender(accountToUpdate.getGender());
-//            return account;
-//        }).orElse(null);
-//    }
-//
-//    public void deleteById(long id) {
-//        Optional<Account> account = findById(id);
-//        account.ifPresent(accounts::remove);
-//    }
