@@ -34,11 +34,6 @@ public class AccountRestController {
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
 
-    @GetMapping("/test")
-    public String account() {
-        return "Teeeeeeeeeeeeeeeeest";
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable long id) {
         Account account = accountService.getAccountById(id);
