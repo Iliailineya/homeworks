@@ -1,13 +1,10 @@
 package example.spring.repository;
 
 import example.spring.model.Account;
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -21,41 +18,50 @@ public class AccountsRepository {
     }
 
     public Account save(Account account) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        return currentSession.merge(account);
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(account);
+            session.getTransaction().commit();
+            return account;
+        }
     }
 
-    @SuppressWarnings("unchecked")
     public List<Account> findAll() {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Account> cq = cb.createQuery(Account.class);
-        Root<Account> root = cq.from(Account.class);
-        cq.select(root);
-        Query query = session.createQuery(cq);
-        return query.getResultList();
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Account", Account.class).list();
+        }
     }
 
     public Optional<Account> findById(Long id) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        Account account = currentSession.get(Account.class, id);
-        return Optional.ofNullable(account);
+        try (Session session = sessionFactory.openSession()) {
+            Account account = session.get(Account.class, id);
+            return Optional.ofNullable(account);
+        }
     }
 
     public void updateAccount(Account account) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.update(account);
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(account);
+            session.getTransaction().commit();
+        }
     }
 
     public void deleteById(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Account account = session.byId(Account.class).load(id);
-        session.remove(account);
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Account account = session.get(Account.class, id);
+            if (account != null) {
+                session.remove(account);
+            }
+            session.getTransaction().commit();
+        }
     }
 
     public boolean existsById(Long id) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        Account account = currentSession.get(Account.class, id);
-        return account != null;
+        try (Session session = sessionFactory.openSession()) {
+            Account account = session.get(Account.class, id);
+            return account != null;
+        }
     }
 }
