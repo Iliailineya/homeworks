@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class TestBean {
-    @RandomValue(min = 0.0, max = 100.0)
+    @RandomValue(max = 100.0)
     private double value;
 }
