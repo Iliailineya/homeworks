@@ -7,7 +7,10 @@
     <groupId>org.example</groupId>
     <artifactId>homeworks</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>TaskManager</module>
+    </modules>
 
 
     <properties>
