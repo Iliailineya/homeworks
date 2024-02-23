@@ -19,18 +19,20 @@ public class RandomValueBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Field[] fields = bean.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(RandomValue.class)) {
-                RandomValue annotation = field.getAnnotation(RandomValue.class);
-                double min = annotation.min();
-                double max = annotation.max();
-                double randomValue = min + (max - min) * random.nextDouble();
-                field.setAccessible(true);
-                try {
-                    field.set(bean, randomValue);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+        if (bean instanceof TestBean) {
+            Field[] fields = bean.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(RandomValue.class)) {
+                    RandomValue annotation = field.getAnnotation(RandomValue.class);
+                    double min = annotation.min();
+                    double max = annotation.max();
+                    double randomValue = min + (max - min) * random.nextDouble();
+                    field.setAccessible(true);
+                    try {
+                        field.set(bean, randomValue);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
