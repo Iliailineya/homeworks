@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Iliailinea
+      changes:
+        - sqlFile:
+            path: sql/create_projects_table.sql
+
+  - changeSet:
+      id: 2
+      author: Iliailinea
+      changes:
+        - sqlFile:
+            path: sql/create_tasks_table.sql
+
+  - changeSet:
+      id: 3
+      author: Iliailinea
+      changes:
+        - sqlFile:
+            path: sql/create_task_reports_table.sql
