@@ -17,7 +17,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(value = "example.spring")
 @EnableWebMvc
-@PropertySource("classpath:app.properties")
+@PropertySource("src/main/resources/app.properties")
 @EnableTransactionManagement
 public class AppConfig {
     private final Environment environment;
