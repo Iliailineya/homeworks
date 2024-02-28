@@ -12,11 +12,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/users")
-public class UserRestController {
+public class UserController {
 
     private final UserService userService;
 
-    public UserRestController(UserService UserService, List<User> user) {
+    public UserController(UserService UserService) {
         this.userService = UserService;
     }
 

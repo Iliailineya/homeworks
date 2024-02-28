@@ -20,11 +20,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/accounts")
-public class AccountRestController {
+public class AccountController {
 
     private final AccountService accountService;
 
-    public AccountRestController(AccountService accountService, List<Account> accounts) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 

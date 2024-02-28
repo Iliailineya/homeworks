@@ -11,10 +11,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/payments")
-public class PaymentRestController {
+public class PaymentController {
     private final PaymentService PaymentService;
 
-    public PaymentRestController(PaymentService PaymentService, List<Payment> payment) {
+    public PaymentController(PaymentService PaymentService) {
         this.PaymentService = PaymentService;
     }
 
