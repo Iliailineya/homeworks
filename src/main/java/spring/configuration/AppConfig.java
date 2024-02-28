@@ -16,10 +16,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(value = "example.spring")
+@ComponentScan(value = "spring")
 @EnableWebMvc
 @PropertySource("src/main/resources/app.properties")
-@EnableJpaRepositories(value = "example.spring")
+@EnableJpaRepositories(value = "spring")
 @EnableTransactionManagement
 public class AppConfig {
     private final Environment environment;
