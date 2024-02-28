@@ -18,6 +18,8 @@ import spring.exception.UserNotFoundException;
 import spring.model.User;
 import spring.service.UserService;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,7 +46,7 @@ class UserControllerTest {
     void findNotExistingUser() throws Exception {
         mockMvc.perform(get("/api/user/999"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
-                .andExpect(result -> assertEquals("User not found", result.getResolvedException().getMessage()))
+                .andExpect(result -> assertEquals("User not found", Objects.requireNonNull(result.getResolvedException()).getMessage()))
                 .andReturn();
     }
 

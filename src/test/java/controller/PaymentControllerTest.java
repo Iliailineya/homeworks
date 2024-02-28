@@ -20,6 +20,7 @@ import spring.model.Payment;
 import spring.service.PaymentService;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +48,7 @@ class PaymentControllerTest {
     void findNotExistingPayment() throws Exception {
         mockMvc.perform(get("/api/payment/999"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PaymentNotFoundException))
-                .andExpect(result -> assertEquals("Payment not found", result.getResolvedException().getMessage()))
+                .andExpect(result -> assertEquals("Payment not found", Objects.requireNonNull(result.getResolvedException()).getMessage()))
                 .andReturn();
     }
 

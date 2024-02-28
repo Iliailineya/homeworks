@@ -20,6 +20,7 @@ import spring.model.enums.Gender;
 import spring.service.AccountService;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +48,7 @@ class AccountControllerTest {
     void findNotExistingAccount() throws Exception {
         mockMvc.perform(get("/api/account/999"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof AccountNotFoundException))
-                .andExpect(result -> assertEquals("Account not found", result.getResolvedException().getMessage()))
+                .andExpect(result -> assertEquals("Account not found", Objects.requireNonNull(result.getResolvedException()).getMessage()))
                 .andReturn();
     }
 
