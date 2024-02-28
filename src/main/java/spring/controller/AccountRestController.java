@@ -1,7 +1,7 @@
-package example.spring.controller;
+package spring.controller;
 
-import example.spring.model.Account;
-import example.spring.service.AccountService;
+import spring.model.Account;
+import spring.service.AccountService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

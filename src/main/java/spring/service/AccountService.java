@@ -1,8 +1,8 @@
-package example.spring.service;
+package spring.service;
 
-import example.spring.exception.AccountNotFoundException;
-import example.spring.model.Account;
-import example.spring.repository.AccountsRepository;
+import spring.model.Account;
+import spring.exception.AccountNotFoundException;
+import spring.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class AccountService {
-    private final AccountsRepository repository;
+
+    private final AccountRepository repository;
 
     public Account createAccount(Account account) {
         return repository.save(account);
@@ -29,7 +30,7 @@ public class AccountService {
     public Account updateAccount(long id, Account account) {
         if (repository.existsById(id)) {
             account.setId(id);
-            repository.updateAccount(account);
+            repository.save(account);
             return account;
         } else {
             throw new AccountNotFoundException("Account with id " + id + " not found");

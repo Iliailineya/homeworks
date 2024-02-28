@@ -1,6 +1,6 @@
-package example.spring.model;
+package spring.model;
 
-import example.spring.model.enams.Gender;
+import spring.model.enums.Gender;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
