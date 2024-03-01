@@ -1,11 +1,10 @@
 package spring.service;
 
-import spring.exception.PaymentNotFoundException;
-import spring.model.Payment;
-import spring.model.User;
-import spring.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import spring.exception.PaymentNotFoundException;
+import spring.model.Payment;
+import spring.repository.PaymentRepository;
 
 import java.util.List;
 
