@@ -2,6 +2,7 @@ package spring.service;
 
 import spring.exception.PaymentNotFoundException;
 import spring.model.Payment;
+import spring.model.User;
 import spring.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,9 @@ public class PaymentService {
     }
 
     public Payment updatePayment(long id, Payment payment) {
-        if (repository.existsById(id)) {
-            payment.setId(id);
-            repository.save(payment);
-            return payment;
-        } else {
-            throw new PaymentNotFoundException("Payment with id " + id + " not found");
-        }
+        getPaymentById(id);
+        payment.setId(id);
+        return repository.save(payment);
     }
 
     public void deletePaymentById(long id) {

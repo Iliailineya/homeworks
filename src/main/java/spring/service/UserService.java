@@ -28,13 +28,9 @@ public class UserService {
     }
 
     public User updateUser(long id, User user) {
-        if (repository.existsById(id)) {
-            user.setId(id);
-            repository.save(user);
-            return user;
-        } else {
-            throw new UserNotFoundException("User with id " + id + " not found");
-        }
+        getUserById(id);
+        user.setId(id);
+        return repository.save(user);
     }
 
     public void deleteUserById(long id) {

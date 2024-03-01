@@ -28,13 +28,9 @@ public class AccountService {
     }
 
     public Account updateAccount(long id, Account account) {
-        if (repository.existsById(id)) {
-            account.setId(id);
-            repository.save(account);
-            return account;
-        } else {
-            throw new AccountNotFoundException("Account with id " + id + " not found");
-        }
+        getAccountById(id);
+        account.setId(id);
+        return repository.save(account);
     }
 
     public void deleteAccountById(long id) {
