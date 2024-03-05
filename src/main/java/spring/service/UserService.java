@@ -1,7 +1,10 @@
 package spring.service;
 
 import spring.exception.UserNotFoundException;
+import spring.model.Role;
 import spring.model.User;
+import spring.model.dto.UserDTO;
+import spring.repository.RoleRepository;
 import spring.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,29 +15,46 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public User createUser(User user) {
-        return repository.save(user);
+    public Long createUser(UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setLastName(userDTO.getLastName());
+        user.setFirstName(userDTO.getFirstName());
+        Role role = roleRepository.findByName("CLIENT");
+        user.setRoles(List.of(role));
+        return userRepository.save(user).getId();
     }
 
     public User getUserById(long id) {
-        return repository.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
     public List<User> getAllUsers() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
-    public User updateUser(long id, User user) {
+    public User updateUser(long id, UserDTO userDTO) {
         getUserById(id);
-        return repository.save(user);
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setLastName(userDTO.getLastName());
+        user.setFirstName(userDTO.getFirstName());
+        Role role = roleRepository.findByName("CLIENT");
+        user.setRoles(List.of(role));
+        return userRepository.save(user);
     }
 
     public void deleteUserById(long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
         } else {
             throw new UserNotFoundException("User with id " + id + " not found");
         }

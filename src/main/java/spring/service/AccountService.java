@@ -1,10 +1,11 @@
 package spring.service;
 
-import spring.model.Account;
-import spring.exception.AccountNotFoundException;
-import spring.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import spring.exception.AccountNotFoundException;
+import spring.model.Account;
+import spring.model.dto.AccountDTO;
+import spring.repository.AccountRepository;
 
 import java.util.List;
 
@@ -12,29 +13,41 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountService {
 
-    private final AccountRepository repository;
+    private final AccountRepository accountRepository;
 
-    public Account createAccount(Account account) {
-        return repository.save(account);
+    public Long createAccount(AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setFirstName(accountDTO.getFirstName());
+        account.setLastName(accountDTO.getLastName());
+        account.setCountry(accountDTO.getCountry());
+        account.setBalance(accountDTO.getBalance());
+        account.setGender(accountDTO.getGender());
+        return accountRepository.save(account).getId();
     }
 
     public Account getAccountById(long id) {
-        return repository.findById(id)
+        return accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account with id " + id + " not found"));
     }
 
     public List<Account> getAllAccounts() {
-        return repository.findAll();
+        return accountRepository.findAll();
     }
 
-    public Account updateAccount(long id, Account account) {
+    public Account updateAccount(long id, AccountDTO accountDTO) {
         getAccountById(id);
-        return repository.save(account);
+        Account account = new Account();
+        account.setFirstName(accountDTO.getFirstName());
+        account.setLastName(accountDTO.getLastName());
+        account.setCountry(accountDTO.getCountry());
+        account.setBalance(accountDTO.getBalance());
+        account.setGender(accountDTO.getGender());
+        return accountRepository.save(account);
     }
 
     public void deleteAccountById(long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (accountRepository.existsById(id)) {
+            accountRepository.deleteById(id);
         } else {
             throw new AccountNotFoundException("Account with id " + id + " not found");
         }
