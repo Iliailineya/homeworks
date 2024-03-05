@@ -12,6 +12,7 @@ import spring.util.validation.UniqueUsername;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    @NotBlank
     @Size(min = 3, message = "size must be at least 3 symbols")
     @UniqueUsername(message = "user name is not unique")
     String username;
