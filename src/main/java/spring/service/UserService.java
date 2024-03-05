@@ -29,7 +29,6 @@ public class UserService {
 
     public User updateUser(long id, User user) {
         getUserById(id);
-        user.setId(id);
         return repository.save(user);
     }
 

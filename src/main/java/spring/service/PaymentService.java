@@ -29,7 +29,6 @@ public class PaymentService {
 
     public Payment updatePayment(long id, Payment payment) {
         getPaymentById(id);
-        payment.setId(id);
         return repository.save(payment);
     }
 

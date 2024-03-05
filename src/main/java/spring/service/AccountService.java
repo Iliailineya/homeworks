@@ -29,7 +29,6 @@ public class AccountService {
 
     public Account updateAccount(long id, Account account) {
         getAccountById(id);
-        account.setId(id);
         return repository.save(account);
     }
 
