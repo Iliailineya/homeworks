@@ -1,6 +1,8 @@
 package spring.controller;
 
+import jakarta.validation.Valid;
 import spring.model.User;
+import spring.model.dto.UserDTO;
 import spring.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,9 @@ public class UserController {
         this.userService = UserService;
     }
 
-    @PostMapping("/post")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Long> createUser(@Valid @RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable long id, @Valid  @RequestBody UserDTO userDetails) {
         User updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
