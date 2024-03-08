@@ -12,39 +12,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
-    private final PaymentService PaymentService;
+    private final PaymentService paymentService;
 
     public PaymentController(PaymentService PaymentService) {
-        this.PaymentService = PaymentService;
+        this.paymentService = PaymentService;
     }
 
     @PostMapping("/post")
     public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
-        Payment createdPayment = PaymentService.createPayment(payment);
+        Payment createdPayment = paymentService.createPayment(payment);
         return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Payment> getPaymentById(@PathVariable long id) {
-        Payment payment = PaymentService.getPaymentById(id);
+        Payment payment = paymentService.getPaymentById(id);
         return ResponseEntity.ok(payment);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Payment>> getAllPayments() {
-        List<Payment> payments = PaymentService.getAllPayments();
+        List<Payment> payments = paymentService.getAllPayments();
         return ResponseEntity.ok(payments);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Payment> updatePayment(@PathVariable long id, @RequestBody Payment paymentDetails) {
-        Payment updatedPayment = PaymentService.updatePayment(id, paymentDetails);
+        Payment updatedPayment = paymentService.updatePayment(id, paymentDetails);
         return ResponseEntity.ok(updatedPayment);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePaymentById(@PathVariable long id) {
-        PaymentService.deletePaymentById(id);
+        paymentService.deletePaymentById(id);
         return ResponseEntity.noContent().build();
     }
 }
