@@ -1,7 +1,9 @@
-package example.spring.controller;
+package spring.controller;
 
-import example.spring.model.Account;
-import example.spring.service.AccountService;
+import jakarta.validation.Valid;
+import spring.model.Account;
+import spring.model.dto.AccountDTO;
+import spring.service.AccountService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +22,17 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/accounts")
-public class AccountRestController {
+public class AccountController {
 
     private final AccountService accountService;
 
-    public AccountRestController(AccountService accountService, List<Account> accounts) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-    @PostMapping("/post")
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        Account createdAccount = accountService.createAccount(account);
-        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Long> createAccount(@Valid  @RequestBody AccountDTO accountDTO) {
+        return new ResponseEntity<>(accountService.createAccount(accountDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -47,7 +48,7 @@ public class AccountRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable long id, @RequestBody Account accountDetails) {
+    public ResponseEntity<Account> updateAccount(@PathVariable long id,@Valid @RequestBody AccountDTO accountDetails) {
         Account updatedAccount = accountService.updateAccount(id, accountDetails);
         return ResponseEntity.ok(updatedAccount);
     }

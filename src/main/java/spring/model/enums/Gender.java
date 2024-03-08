@@ -1,4 +1,4 @@
-package example.spring.model.enams;
+package spring.model.enums;
 
 public enum Gender {
     MALE, FEMALE
