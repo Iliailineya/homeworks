@@ -1,12 +1,11 @@
 package spring.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import spring.model.User;
 import spring.model.dto.UserDTO;
 import spring.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,11 +19,6 @@ public class UserController {
 
     public UserController(UserService UserService) {
         this.userService = UserService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Long> createUser(@Valid @RequestBody UserDTO userDTO) {
-        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
