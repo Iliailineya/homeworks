@@ -11,6 +11,7 @@
     <modules>
         <module>TaskManager</module>
         <module>TestBean</module>
+        <module>loger-starter</module>
     </modules>
 
     <properties>
