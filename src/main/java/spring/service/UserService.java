@@ -1,5 +1,6 @@
 package spring.service;
 
+import example.logger.aspect.Loggable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,6 +52,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Loggable
     public Long register(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
