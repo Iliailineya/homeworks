@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,26 +27,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .httpBasic().disable()
-                .csrf().disable();
-        httpSecurity
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/auth/signin", "/auth/signup")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated());
-        httpSecurity
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/**")
-                        .hasAnyAuthority("CLIENT", "ADMIN")
-                        .anyRequest()
-                        .authenticated());
-        httpSecurity.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/**").hasAnyAuthority("CLIENT", "ADMIN")
+                        .requestMatchers("/auth/signin", "/auth/signup").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
