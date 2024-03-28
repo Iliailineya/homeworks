@@ -14,10 +14,12 @@
 	<groupId>com.example</groupId>
 	<artifactId>homeworks</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>homeworks</name>
+
     <modules>
         <module>loger-starter</module>
-    </modules>
+	</modules>
 
 	<properties>
 		<java.version>19</java.version>
