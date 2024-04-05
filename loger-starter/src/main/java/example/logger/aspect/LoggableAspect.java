@@ -1,27 +1,34 @@
 package example.logger.aspect;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.util.StopWatch;
 
 @Aspect
-@Component
 public class LoggableAspect {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @AfterReturning(pointcut = "@annotation(Loggable)", returning = "result")
-    public void logMethodResult(JoinPoint joinPoint, Object result) {
-        logger.info(joinPoint.getSignature() + " returned: " + result);
+    @Pointcut("@annotation(example.logger.aspect.Loggable)")
+    public void loggableMethod() {
     }
 
-    @AfterThrowing(pointcut = "@annotation(Loggable)", throwing = "exception")
-    public void logMethodException(JoinPoint joinPoint, Throwable exception) {
-        logger.error(joinPoint.getSignature() + " threw exception: " + exception.getMessage(),
-                exception);
+    @Around("loggableMethod()")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        String className = methodSignature.getDeclaringType().getSimpleName();
+        String methodName = methodSignature.getName();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Thread.sleep(50);
+        try {
+            return joinPoint.proceed();
+        } catch (Throwable throwable) {
+            System.out.println("Exception occurred");
+            throw throwable;
+        } finally {
+            stopWatch.stop();
+            System.out.println("Execution time for " + className + "." + methodName + " :: " + stopWatch.getTotalTimeMillis() + " ms");
+        }
     }
 }
