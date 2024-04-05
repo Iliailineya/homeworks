@@ -14,7 +14,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>homeworks</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>homeworks</name>
 
     <modules>
@@ -23,6 +23,8 @@
 
 	<properties>
 		<java.version>19</java.version>
+		<maven.compiler.source>19</maven.compiler.source>
+		<maven.compiler.target>19</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -109,6 +111,12 @@
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>example.logger</groupId>-->
+<!--			<artifactId>logger-starter</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
