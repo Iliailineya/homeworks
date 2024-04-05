@@ -14,11 +14,12 @@
 	<groupId>com.example</groupId>
 	<artifactId>homeworks</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>homeworks</name>
 
     <modules>
         <module>loger-starter</module>
+		<module>rest_api</module>
 	</modules>
 
 	<properties>
@@ -111,12 +112,6 @@
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>example.logger</groupId>-->
-<!--			<artifactId>logger-starter</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--			<scope>compile</scope>-->
-<!--		</dependency>-->
 	</dependencies>
 
 	<build>
