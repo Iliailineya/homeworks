@@ -1,27 +1,20 @@
 package spring.controller;
 
-import jakarta.validation.Valid;
-import spring.model.Account;
-import spring.model.dto.AccountDTO;
-import spring.service.AccountService;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import spring.model.Account;
+import spring.model.dto.AccountDTO;
+import spring.service.AccountService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-
-import java.util.List;
-
-@SuppressWarnings("unused")
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("api/account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -30,33 +23,20 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping(value = "/{id}")
+    public Account getAccountById(@PathVariable Long id) {
+        return accountService.getAccountById(id);
+    }
+
     @PostMapping
-    public ResponseEntity<Long> createAccount(@Valid  @RequestBody AccountDTO accountDTO) {
-        return new ResponseEntity<>(accountService.createAccount(accountDTO), HttpStatus.CREATED);
+    public ResponseEntity<Long> createAccount(@RequestBody AccountDTO account) {
+        return new ResponseEntity<>(accountService.createAccount(account), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable long id) {
-        Account account = accountService.getAccountById(id);
-        return ResponseEntity.ok(account);
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<Account>> getAllAccounts() {
-        List<Account> accounts = accountService.getAllAccounts();
-        return ResponseEntity.ok(accounts);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable long id,@Valid @RequestBody AccountDTO accountDetails) {
-        Account updatedAccount = accountService.updateAccount(id, accountDetails);
-        return ResponseEntity.ok(updatedAccount);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccountById(@PathVariable long id) {
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccountById(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>("Account successfully deleted", HttpStatus.OK);
     }
-}
 
+}
