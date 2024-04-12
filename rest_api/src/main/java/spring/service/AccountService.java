@@ -1,55 +1,48 @@
 package spring.service;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import spring.exception.AccountNotFoundException;
 import spring.model.Account;
+import spring.model.User;
 import spring.model.dto.AccountDTO;
 import spring.repository.AccountRepository;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final UserService userService;
+
+    public AccountService(AccountRepository accountRepository, UserService userService) {
+        this.accountRepository = accountRepository;
+        this.userService = userService;
+    }
+
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("account with id:" + id + "not found"));
+    }
+
+//TODO check how to use entity graph here
+
+//    public List<Payment> getPaymentsByAccountId(Long id) {
+//        return accountRepository.getPaymentsByAccountId(id)
+//                .orElseThrow(() -> new AccountNotFoundException("account with id:" + id + "not found"));
+//    }
 
     public Long createAccount(AccountDTO accountDTO) {
         Account account = new Account();
+        account.setBalance(accountDTO.getBalance());
+        account.setCountry(accountDTO.getCountry());
         account.setFirstName(accountDTO.getFirstName());
         account.setLastName(accountDTO.getLastName());
-        account.setCountry(accountDTO.getCountry());
-        account.setBalance(accountDTO.getBalance());
         account.setGender(accountDTO.getGender());
+        User user = userService.findUserById(accountDTO.getUserId());
+        account.setUser(user);
         return accountRepository.save(account).getId();
     }
 
-    public Account getAccountById(long id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new AccountNotFoundException("Account with id " + id + " not found"));
-    }
-
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
-    }
-
-    public Account updateAccount(long id, AccountDTO accountDTO) {
-        getAccountById(id);
-        Account account = new Account();
-        account.setFirstName(accountDTO.getFirstName());
-        account.setLastName(accountDTO.getLastName());
-        account.setCountry(accountDTO.getCountry());
-        account.setBalance(accountDTO.getBalance());
-        account.setGender(accountDTO.getGender());
-        return accountRepository.save(account);
-    }
-
-    public void deleteAccountById(long id) {
-        if (accountRepository.existsById(id)) {
-            accountRepository.deleteById(id);
-        } else {
-            throw new AccountNotFoundException("Account with id " + id + " not found");
-        }
+    public void deleteAccountById(Long id) {
+        accountRepository.deleteById(id);
     }
 }
