@@ -1,18 +1,23 @@
 package spring.security.filter;
 
-
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import spring.exception.JwtTokenException;
 import spring.security.jwt.TokenProvider;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static spring.util.handler.ResponseHandler.buildResponse;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -26,11 +31,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getRequestURI().equals("/auth/signin") ||
-                request.getRequestURI().equals("/auth/signup")) {
+                request.getRequestURI().equals("/auth/signup") ||
+                request.getRequestURI().contains("swagger") ||
+                request.getRequestURI().contains("v3")) {
             filterChain.doFilter(request, response);
         } else {
             try {
-                String authHeader = request.getHeader("Authorization");
+                String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
                 DecodedJWT decodedJWT = tokenProvider.resolveToken(authHeader);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         decodedJWT.getSubject(),
@@ -38,8 +45,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                         tokenProvider.getAuthoritiesFromToken(decodedJWT));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
+            } catch (SignatureVerificationException exception) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                buildResponse(response, new JwtTokenException("TOKEN_DECLARATION_IS_WRONG"));
+            } catch (TokenExpiredException expiredException) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                buildResponse(response, new TokenExpiredException("TOKEN_IS_EXPIRED"));
             } catch (Exception exception) {
-                System.out.println(exception.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                buildResponse(response, "You are not authenticated");
             }
         }
     }

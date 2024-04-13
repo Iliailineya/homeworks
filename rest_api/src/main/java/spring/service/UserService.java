@@ -1,17 +1,17 @@
 package spring.service;
 
 import example.logger.aspect.Loggable;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import spring.exception.UserNotFoundException;
 import spring.model.Role;
 import spring.model.User;
 import spring.model.dto.UserDTO;
 import spring.repository.RoleRepository;
 import spring.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import spring.security.model.UserDetailsImpl;
 
 import java.util.List;
@@ -22,37 +22,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public User getUserById(long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    @Loggable
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
-    public List<User> getAllUsers() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    public User updateUser(long id, UserDTO userDTO) {
-        getUserById(id);
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setLastName(userDTO.getLastName());
-        user.setFirstName(userDTO.getFirstName());
-        Role role = roleRepository.findByName("CLIENT");
-        user.setRoles(List.of(role));
-        return userRepository.save(user);
-    }
-
-    public void deleteUserById(long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-        } else {
-            throw new UserNotFoundException("User with id " + id + " not found");
-        }
-    }
-
-    @Loggable
     public Long register(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
@@ -62,6 +40,7 @@ public class UserService implements UserDetailsService {
         user.setFirstName(userDTO.getFirstName());
         Role role = roleRepository.findByName("CLIENT");
         user.setRoles(List.of(role));
+        //kafkaTemplate.send()
         return userRepository.save(user).getId();
     }
 

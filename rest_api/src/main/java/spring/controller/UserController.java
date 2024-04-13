@@ -1,47 +1,40 @@
 package spring.controller;
 
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import spring.model.User;
 import spring.model.dto.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import spring.service.UserService;
 
 import java.util.List;
 
-
-@SuppressWarnings("unused")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("api/user")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService UserService) {
-        this.userService = UserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable long id) {
-        User User = userService.getUserById(id);
-        return ResponseEntity.ok(User);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        User user = userService.findUserById(id);
+        return new ResponseEntity<>(UserDTO.builder()
+                .username(user.getUsername())
+                .lastName(user.getLastName())
+                .firstName(user.getFirstName())
+                .email(user.getEmail())
+                .build(), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable long id, @Valid  @RequestBody UserDTO userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable long id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping
+    public ResponseEntity<List<User>> getAllPayments() {
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 }
