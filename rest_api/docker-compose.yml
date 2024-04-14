@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: mysql
+    container_name: mysql
+    restart: always
+    volumes:
+      - project_data:/var/lib/mysql/data
+    environment:
+      MYSQL_PASSWORD: password
+    ports:
+      - "5433:5432"
+  rest-api:
+    build: .
+    container_name: rest-api
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+      SECRET: ${SECRET}
+      EXPIRE_TIME: ${EXPIRE_TIME}
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+volumes:
+  project_data:
